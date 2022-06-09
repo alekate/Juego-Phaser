@@ -7,7 +7,7 @@ var score;
 var gameOver;
 var scoreText;
 
-export class Play extends Phaser.Scene {
+export class nivel_1 extends Phaser.Scene {
     constructor() {
       super("nivel_1");
     }
