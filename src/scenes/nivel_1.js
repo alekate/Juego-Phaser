@@ -8,39 +8,51 @@ var gameOver;
 var scoreText;
 
 export class nivel_1 extends Phaser.Scene {
-    constructor() {
-      super("nivel_1");
+  constructor() {
+    super("nivel_1");
+ }
+
+  preload() {
+   this.load.tilemapTiledJSON("map", "public/assets/tilemaps/nivel_1.json");
+   this.load.image("fondo", "public/assets/images/atlas_sky.png");
+   this.load.image("platform", "public/assets/images/atlas_plataforma.png")
+  }
+  onSecond() {
+    if (! gameOver)
+    {       
+        scoreTime = scoreTime - 1; // One second
+        scoreTimeText.setText('Time: ' + scoreTime);
+        if (scoreTime == 0) {
+            timedEvent.paused = true;
+            this.scene.start(
+              "retry",
+              { score: score } // se pasa el puntaje como dato a la escena RETRY
+            );
+     }            
     }
+  }
 
-    preload() {
 
-        this.load.tilemapTiledJSON("map", "public/assets/tilemaps/nivel_1.json");
-        this.load.image("fondo", "public/assets/images/atlas_sky.png");
-        this.load.image("platform", "public/assets/images/atlas_plataforma.png")
-    }
+  create() {
 
-    create() {
-
-        const map = this.make.tilemap({ key: "map" });
-        const tilesetBelow = map.addTilesetImage("atlas_sky", "fondo");
-        const tilesetPlatform = map.addTilesetImage("atlas_plataforma", "platform");
+    const map = this.make.tilemap({ key: "map" });
+    const tilesetBelow = map.addTilesetImage("atlas_sky", "fondo");
+    const tilesetPlatform = map.addTilesetImage("atlas_plataforma", "platform");
     
-        const belowLayer = map.createLayer("fondo", tilesetBelow, 0, 0);
-        const worldLayer = map.createLayer("plataforma", tilesetPlatform, 0, 0); //lo mismo que hay en tiled
-        const objectsLayer = map.getObjectLayer("objetos");
+    const belowLayer = map.createLayer("fondo", tilesetBelow, 0, 0);
+    const worldLayer = map.createLayer("plataforma", tilesetPlatform, 0, 0); //lo mismo que hay en tiled
+    const objectsLayer = map.getObjectLayer("objetos");
     
-        worldLayer.setCollisionByProperty({ collides: true });
+    worldLayer.setCollisionByProperty({ collides: true });
     
-        const spawnPoint = map.findObject("objetos", (obj) => obj.name === "dude");
+    const spawnPoint = map.findObject("objetos", (obj) => obj.name === "dude");
+    player = this.physics.add.sprite(spawnPoint.x, spawnPoint.y, "dude");
 
-        player = this.physics.add.sprite(spawnPoint.x, spawnPoint.y, "dude");
-
-        player.setBounce(0);
-        player.setCollideWorldBounds(true);
-    
-        if ((cursors = !undefined)) {
-            cursors = this.input.keyboard.createCursorKeys();
-        }
+    player.setBounce(0);
+    player.setCollideWorldBounds(true);
+      if ((cursors = !undefined)) {
+       cursors = this.input.keyboard.createCursorKeys();
+      }
 
 
           paja = this.physics.add.group();

@@ -23,6 +23,7 @@ var config = {
      height: 1200,
    },
  },
+ 
  physics: {
    default: "arcade",
    arcade: {

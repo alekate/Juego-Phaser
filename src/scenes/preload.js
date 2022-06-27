@@ -6,7 +6,7 @@ export class preload extends Phaser.Scene {
 
   preload() {
     this.load.image("logo","public/assets/images/logo.png");
-   this.load.image("mainmenufondo","public/assets/images/mainmenu.png"); 
+   this.load.image("mainmenufondo","public/assets/images/fondomenu.png"); 
         
    this.load.image("paja","public/assets/images/paja.png");
    this.load.image("manzana","public/assets/images/manzana.png"); 
