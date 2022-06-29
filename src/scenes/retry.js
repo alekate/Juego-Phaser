@@ -15,7 +15,7 @@ export class retry extends Phaser.Scene {
 
 create() {
     this.add
-     .image(this.cameras.main.centerX, this.cameras.main.centerY, "mainmenufondo") //buscar pantalla retry y poner ak cargar con la key.
+     .image(this.cameras.main.centerX, this.cameras.main.centerY, "mainmenufondo") 
      .setScale(1.1);
     
     this.add.image(

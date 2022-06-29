@@ -7,7 +7,7 @@ export class mainmenu extends Phaser.Scene {
 
   create() {
     this.add
-     .image(this.cameras.main.centerX, this.cameras.main.centerY, "mainmenufondo") //imagen del fondo del menu (poner primero en preaload y dsp llamarlo aca)
+     .image(this.cameras.main.centerX, this.cameras.main.centerY, "mainmenufondo") 
       .setScale(1.1);
     this.add
    .image(
@@ -23,7 +23,7 @@ export class mainmenu extends Phaser.Scene {
       this,
 
       () => {
-        this.scene.start("nivel_3"); 
+        this.scene.start("nivel_1"); 
       }
 
     );

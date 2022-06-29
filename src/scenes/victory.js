@@ -13,7 +13,7 @@ export class victory extends Phaser.Scene {
         this.add.image(
           this.cameras.main.centerX,
           this.cameras.main.centerY / 1.5,
-          "Win_logo"
+          "logo_vicotry"
         )
         .setScale(1.1);
 

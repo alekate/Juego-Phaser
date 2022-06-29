@@ -6,8 +6,9 @@ var cursors;
 var score;
 var gameOver;
 var scoreText;
-var scoreTimeText; //que chcuha ase
-var timedEvent; //que chcuha ase
+var scoreTimeText; 
+var scoreTime; 
+var timedEvent; 
 
 export class nivel_3 extends Phaser.Scene {
   constructor() {
@@ -20,19 +21,19 @@ export class nivel_3 extends Phaser.Scene {
    this.load.image("platform", "public/assets/images/atlas_plataforma.png")
   }
 
- // onSecond() {
-    //if (! gameOver){        
-      //scoreTime = scoreTime - 1; // One second
-      //scoreTimeText.setText('Time: ' + scoreTime);
-      //if (scoreTime == 0) {
-        //timedEvent.paused = true;
-        //this.scene.start(
-          //"retry",
-          //{ score: score }                                          // se pasa el puntaje como dato a la escena RETRY
-       // );
-    // }            
-    //}
- // }
+  onSecond() {
+    if (! gameOver){        
+      scoreTime = scoreTime - 1; 
+      scoreTimeText.setText('Tiempo: ' + scoreTime);
+      if (scoreTime == 0) {
+        timedEvent.paused = true;
+        this.scene.start(
+          "retry",
+          { score: score }        
+        );
+     }            
+    }
+  }
 
 
   create() {
@@ -49,7 +50,7 @@ export class nivel_3 extends Phaser.Scene {
     const tilesetPlatform = map.addTilesetImage("atlas_plataforma", "platform");
     
     const belowLayer = map.createLayer("fondo", tilesetBelow, 0, 0);
-    const worldLayer = map.createLayer("plataforma", tilesetPlatform, 0, 0); //lo mismo que hay en tiled
+    const worldLayer = map.createLayer("plataforma", tilesetPlatform, 0, 0); 
     const objectsLayer = map.getObjectLayer("objetos");
     
     worldLayer.setCollisionByProperty({ collides: true });
@@ -114,11 +115,11 @@ export class nivel_3 extends Phaser.Scene {
      fill: "#FFFFFF",
     });
 
-   // scoreTime = 120;
-   // scoreTimeText = this.add.text(500, 6, "Time:" +scoreTime, {
-    //  fontSize: "32px",
-     // fill: "#FFFFFF",
-    //});
+    scoreTime = 120;
+    scoreTimeText = this.add.text(550, 6, "Tiempo:" +scoreTime, {
+      fontSize: "32px",
+      fill: "#FFFFFF",
+    });
 
     this.physics.add.collider(player, worldLayer);
 
