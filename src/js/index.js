@@ -31,7 +31,8 @@ var config = {
      debug: false,
    },
  },
- scene: [preload, mainmenu, nivel_1, nivel_2, nivel_3, retry, victory], //probleam
+ scene: [preload, mainmenu, nivel_1, nivel_2, nivel_3, retry, victory], 
 
 }; 
+
 var game = new Phaser.Game(config);

@@ -6,6 +6,8 @@ var cursors;
 var score;
 var gameOver;
 var scoreText;
+var scoreTimeText; //que chcuha ase
+var timedEvent; //que chcuha ase
 
 export class nivel_1 extends Phaser.Scene {
   constructor() {
@@ -17,23 +19,30 @@ export class nivel_1 extends Phaser.Scene {
    this.load.image("fondo", "public/assets/images/atlas_sky.png");
    this.load.image("platform", "public/assets/images/atlas_plataforma.png")
   }
-  onSecond() {
-    if (! gameOver)
-    {       
-        scoreTime = scoreTime - 1; // One second
-        scoreTimeText.setText('Time: ' + scoreTime);
-        if (scoreTime == 0) {
-            timedEvent.paused = true;
-            this.scene.start(
-              "retry",
-              { score: score } // se pasa el puntaje como dato a la escena RETRY
-            );
-     }            
-    }
-  }
+
+ // onSecond() {
+    //if (! gameOver){        
+      //scoreTime = scoreTime - 1; // One second
+      //scoreTimeText.setText('Time: ' + scoreTime);
+      //if (scoreTime == 0) {
+        //timedEvent.paused = true;
+        //this.scene.start(
+          //"retry",
+          //{ score: score }                                          // se pasa el puntaje como dato a la escena RETRY
+       // );
+    // }            
+    //}
+ // }
 
 
   create() {
+
+    timedEvent = this.time.addEvent({ 
+      delay: 1000, 
+      callback: this.onSecond, 
+      callbackScope: this, 
+      loop: true 
+    });
 
     const map = this.make.tilemap({ key: "map" });
     const tilesetBelow = map.addTilesetImage("atlas_sky", "fondo");
@@ -46,120 +55,152 @@ export class nivel_1 extends Phaser.Scene {
     worldLayer.setCollisionByProperty({ collides: true });
     
     const spawnPoint = map.findObject("objetos", (obj) => obj.name === "dude");
+
     player = this.physics.add.sprite(spawnPoint.x, spawnPoint.y, "dude");
 
     player.setBounce(0);
     player.setCollideWorldBounds(true);
-      if ((cursors = !undefined)) {
-       cursors = this.input.keyboard.createCursorKeys();
-      }
 
-
-          paja = this.physics.add.group();
-          objectsLayer.objects.forEach((objData) => {
-            const { x = 0, y = 0, name, type } = objData;
-            switch (type) {
-              case "paja": {
-                var star = paja.create(x, y, "paja");
-                star.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
-                break;
-              }
-            }
-          });
-
-
-        manzana = this.physics.add.group();
-        objectsLayer.objects.forEach((objData) => {
-        const { x = 0, y = 0, name, type } = objData;
-            switch (type) {
-                case "manzana": {
-                 var star = manzana.create(x, y, "manzana");
-                    star.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
-                 break;
-                 }
-        }
-     });
-
-        bombs = this.physics.add.group(); //agregar por tiled
-
-
-        score = 0;
-        scoreText = this.add.text(30, 6, "Score:" +score, {
-          fontSize: "32px",
-          fill: "#FFFFFF",
-        });
-
-        this.physics.add.collider(player, worldLayer);
-
-        this.physics.add.collider(paja, worldLayer);
-        this.physics.add.collider(manzana, worldLayer);
-    
-        this.physics.add.collider(bombs, worldLayer);
-    
-        this.physics.add.overlap(player, paja, this.collectpaja, null, this);
-        this.physics.add.overlap(player, manzana, this.collectmanzana, null, this);
-    
-        this.physics.add.collider(player, bombs, this.hitBomb, null, this); //aher para bomba etc
-    
-        gameOver = false;
-
-
+    if ((cursors = !undefined)) {
+      cursors = this.input.keyboard.createCursorKeys();
     }
 
-    update() {
 
-        if (gameOver) {
-            return;
-          }
       
-          if (cursors.left.isDown) {
-            player.setVelocityX(-160);
-      
-            player.anims.play("left", true);
-          } else if (cursors.right.isDown) {
-            player.setVelocityX(160);
-      
-            player.anims.play("right", true);
-          } else {
-            player.setVelocityX(0);
-      
-            player.anims.play("turn");
-          }
-      
-          if (cursors.up.isDown && player.body.blocked.down) {
-            player.setVelocityY(-330);
+    paja = this.physics.add.group();
+    objectsLayer.objects.forEach((objData) => {
+     const { x = 0, y = 0, name, type } = objData;
+      switch (type) {
+       case "paja": {
+         var star = paja.create(x, y, "paja");
+         star.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+         break;
+
+        }
+      }
+    });
+
+
+    manzana = this.physics.add.group();
+    objectsLayer.objects.forEach((objData) => {
+      const { x = 0, y = 0, name, type } = objData;
+      switch (type) {
+          case "manzana": {
+            var star = manzana.create(x, y, "manzana");
+            star.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+            break;
           }
         }
+    });
 
-        collectpaja(player, paja) {
-            paja.disableBody(true, true);
-        
-            // Estaria bueno diferenciar lospuntajes de ambas manzanas
-            score += 10;
-            scoreText.setText("Score: " + score);
-        
-          }
-          collectmanzana(player, manzana) {
-            manzana.disableBody(true, true);
-        
-            // Estaria bueno diferenciar lospuntajes de ambas manzanas
-            score += 10;
-            scoreText.setText("Score: " + score);
+
+    bombs = this.physics.add.group(); 
+    objectsLayer.objects.forEach((objData) => {
+      const { x = 0, y = 0, name, type } = objData;
+      switch (type) {
+        case "abeja": {
+          var bomb = bombs.create(x, 16, 'abeja');
+          bomb.setBounce(1);
+          bomb.setCollideWorldBounds(true);
+          bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+          bomb.allowGravity = false;
         }
+      }
+    })
 
-        hitBomb(player, bomb){ //cambai rpara abeja
-            this.physics.pause();
+    score = 0;
+    scoreText = this.add.text(30, 6, "Score:" +score, {
+     fontSize: "32px",
+     fill: "#FFFFFF",
+    });
 
-            player.setTint(0xff0000);
+   // scoreTime = 120;
+   // scoreTimeText = this.add.text(500, 6, "Time:" +scoreTime, {
+    //  fontSize: "32px",
+     // fill: "#FFFFFF",
+    //});
 
-            player.anims.play("turn");
+    this.physics.add.collider(player, worldLayer);
 
-            gameOver = true;
+    this.physics.add.collider(paja, worldLayer);
+    this.physics.add.collider(manzana, worldLayer);
+    
+    this.physics.add.collider(bombs, worldLayer);
+    
+    this.physics.add.overlap(player, paja, this.collectpaja, null, this);
+    this.physics.add.overlap(player, manzana, this.collectmanzana, null, this);
+    
+    this.physics.add.collider(player, bombs, this.hitBomb, null, this); 
+    
+    gameOver = false;
 
-            setTimeout(() => {
-            this.scene.start("retry", { score: score });
-            }, 1000);
-        }
+
+  }
+
+  update() {
+    if (paja.countActive(true) == 0 && manzana.countActive(true) == 0) { 
+      console.log("anda")
+      this.scene.start("nivel_3", { score: score });    
+    }
+
+    if (gameOver) {
+      return;
+    }
+      
+    if (cursors.left.isDown) {
+     player.setVelocityX(-160);
+      
+     player.anims.play("left", true);
+    } else if (cursors.right.isDown) {
+      player.setVelocityX(160);
+      
+      player.anims.play("right", true);
+    } else {
+
+      player.setVelocityX(0);
+      
+      player.anims.play("turn");
+        
+    }
+      
+   if (cursors.up.isDown && player.body.blocked.down) {
+     player.setVelocityY(-330);
+      
+    }
+  }
+
+  collectpaja(player, paja)
+   {
+    paja.disableBody(true, true);
+        
+      score += 10;
+      scoreText.setText("Score: " + score);
+        
+    }
+
+    collectmanzana(player, manzana) 
+    {
+      manzana.disableBody(true, true);
+        
+      score += 10;
+      scoreText.setText("Score: " + score);
+    }
+
+  hitBomb(player, bomb)
+  { 
+    this.physics.pause();
+
+    player.setTint(0xff0000);
+
+    player.anims.play("turn");
+
+    gameOver = true;
+
+    setTimeout(() => {
+      this.scene.start("retry", { score: score });
+    }, 1000);
+
+  }
 
 }
 
