@@ -23,7 +23,7 @@ export class mainmenu extends Phaser.Scene {
       this,
 
       () => {
-        this.scene.start("nivel_1"); 
+        this.scene.start("victory"); 
       }
 
     );

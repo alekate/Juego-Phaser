@@ -16,7 +16,7 @@ export class nivel_3 extends Phaser.Scene {
  }
 
   preload() {
-   this.load.tilemapTiledJSON("map", "public/assets/tilemaps/nivel_3.json");
+   this.load.tilemapTiledJSON("map3", "public/assets/tilemaps/nivel_3.json");
    this.load.image("fondo", "public/assets/images/atlas_sky.png");
    this.load.image("platform", "public/assets/images/atlas_plataforma.png")
   }
@@ -45,7 +45,7 @@ export class nivel_3 extends Phaser.Scene {
       loop: true 
     });
 
-    const map = this.make.tilemap({ key: "map" });
+    const map = this.make.tilemap({ key: "map3" });
     const tilesetBelow = map.addTilesetImage("atlas_sky", "fondo");
     const tilesetPlatform = map.addTilesetImage("atlas_plataforma", "platform");
     
@@ -142,6 +142,9 @@ export class nivel_3 extends Phaser.Scene {
     if (paja.countActive(true) === 0 && manzana.countActive(true) === 0) { 
       this.scene.start("victory", { score: score });    
     }
+    //if (score == 10){ 
+    //  this.scene.start("victory", { score:score });  
+    //}  
 
     if (gameOver) {
       return;
@@ -182,7 +185,7 @@ export class nivel_3 extends Phaser.Scene {
     {
       manzana.disableBody(true, true);
         
-      score += 10;
+      score += 15;
       scoreText.setText("Score: " + score);
     }
 

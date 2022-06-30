@@ -16,7 +16,7 @@ export class nivel_2 extends Phaser.Scene {
  }
 
   preload() {
-   this.load.tilemapTiledJSON("map", "public/assets/tilemaps/nivel_2.json");
+   this.load.tilemapTiledJSON("map2", "public/assets/tilemaps/nivel_2.json");
    this.load.image("fondo", "public/assets/images/atlas_sky.png");
    this.load.image("platform", "public/assets/images/atlas_plataforma.png")
   }
@@ -38,6 +38,8 @@ export class nivel_2 extends Phaser.Scene {
 
   create() {
 
+    console.log("la concha")
+
     timedEvent = this.time.addEvent({ 
       delay: 1000, 
       callback: this.onSecond, 
@@ -45,7 +47,7 @@ export class nivel_2 extends Phaser.Scene {
       loop: true 
     });
 
-    const map = this.make.tilemap({ key: "map" });
+    const map = this.make.tilemap({ key: "map2" });
     const tilesetBelow = map.addTilesetImage("atlas_sky", "fondo");
     const tilesetPlatform = map.addTilesetImage("atlas_plataforma", "platform");
     
@@ -136,12 +138,21 @@ export class nivel_2 extends Phaser.Scene {
     gameOver = false;
 
 
+  
+
+
+
   }
 
   update() {
     if (paja.countActive(true) === 0 && manzana.countActive(true) === 0) { 
-      this.scene.start("nivel_3", { score: score });    
+     this.scene.start("nivel_3", { score: score });    
     }
+
+    //if (score = 100){ 
+    //  this.scene.start("nivel_3", { score:score });  
+    //} 
+
 
     if (gameOver) {
       return;
@@ -182,7 +193,7 @@ export class nivel_2 extends Phaser.Scene {
     {
       manzana.disableBody(true, true);
         
-      score += 10;
+      score += 15;
       scoreText.setText("Score: " + score);
     }
 

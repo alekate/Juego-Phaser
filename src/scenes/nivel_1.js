@@ -36,7 +36,8 @@ export class nivel_1 extends Phaser.Scene {
   }
 
 
-  create() {
+  create(){
+
 
     timedEvent = this.time.addEvent({ 
       delay: 1000, 
@@ -137,21 +138,25 @@ export class nivel_1 extends Phaser.Scene {
 
 
   }
-
+  
   update() {
-
-    if (paja.countActive(true) === 0 && manzana.countActive(true) === 0){ 
-      this.scene.start("nivel_2", { score: score });    
-    } 
-    if (score == 100){ 
-      this.scene.start("nivel_2", { score: score });    
-    } 
-
+    
+   if (paja.countActive(true) === 0 && manzana.countActive(true) === 0){ 
+      this.scene.start("nivel_2", { score:score });    
+    }
+    //if (score == 10) {
+    // console.log("a")
+    //  this.scene.start("nivel_3", { score: score, scoreTime : scoreTime  });
+    //}
 
     if (gameOver) {
       return;
     }
-      
+
+    if (score == 100){ 
+      this.scene.start("nivel_3", { score:score });  
+    } 
+
     if (cursors.left.isDown) {
      player.setVelocityX(-160);
       
@@ -175,38 +180,35 @@ export class nivel_1 extends Phaser.Scene {
   }
 
   collectpaja(player, paja)
-   {
-    paja.disableBody(true, true);
-        
+    {
+      paja.disableBody(true, true);
+          
       score += 10;
       scoreText.setText("Score: " + score);
-        
+          
     }
 
     collectmanzana(player, manzana) 
     {
       manzana.disableBody(true, true);
-        
-      score += 10;
+          
+      score += 15;
       scoreText.setText("Score: " + score);
     }
 
-  hitBomb(player, bomb)
-  { 
-    this.physics.pause();
+    hitBomb(player, bomb)
+    { 
+      this.physics.pause();
 
-    player.setTint(0xff0000);
+      player.setTint(0xff0000);
 
-    player.anims.play("turn");
+      player.anims.play("turn");
 
-    gameOver = true;
+      gameOver = true;
 
-    setTimeout(() => {
-      this.scene.start("retry", { score: score });
-    }, 1000);
+      setTimeout(() => {
+        this.scene.start("retry", { score: score });
+      }, 1000);
 
-  }
-
-}
-
-
+    }
+  } 
