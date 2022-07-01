@@ -142,9 +142,7 @@ export class nivel_3 extends Phaser.Scene {
     if (paja.countActive(true) === 0 && manzana.countActive(true) === 0) { 
       this.scene.start("victory", { score: score });    
     }
-    //if (score == 10){ 
-    //  this.scene.start("victory", { score:score });  
-    //}  
+     
 
     if (gameOver) {
       return;

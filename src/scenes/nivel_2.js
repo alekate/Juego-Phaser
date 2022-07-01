@@ -149,9 +149,7 @@ export class nivel_2 extends Phaser.Scene {
      this.scene.start("nivel_3", { score: score });    
     }
 
-    //if (score = 100){ 
-    //  this.scene.start("nivel_3", { score:score });  
-    //} 
+    
 
 
     if (gameOver) {
